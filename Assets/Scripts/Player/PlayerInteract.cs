@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Linq;
 using System.Collections.Generic;
 using UnityEditor;
@@ -14,7 +15,12 @@ public class PlayerInteract : MonoBehaviour
     private Ingredient _heldIngredient;
     [SerializeField] private Interactable interactable;
     private HashSet<Ingredient> _highlightedIngridients = new HashSet<Ingredient>();
-
+    Cauldron cauldron;
+    private bool isUsing = false;
+    private float useDuration = 2f;
+    private bool isHoldingP = false;
+    private float holdTime = 0f;
+    private float requiredHoldTime = 2f;
     private void Awake()
     {
         _input = new Input();
@@ -26,7 +32,8 @@ public class PlayerInteract : MonoBehaviour
         {
             _input.Player.Enable();
         }
-
+        _input.Player.Use.performed += OnUsePerformed;
+        _input.Player.Use.canceled += OnUseCanceled;
         _input.Player.Interact.performed += OnInteractPerformed;
     }
 
@@ -41,12 +48,54 @@ public class PlayerInteract : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (isHoldingP)
+        {
+            HoldHandling();
+        }
         Highlight();
     }
 
+    void OnUsePerformed(InputAction.CallbackContext context)
+    {
+        Debug.Log("pressed P");
+        isHoldingP = true;
+        cauldron = interactable as Cauldron;
+        if (cauldron != null)
+        {
+            isUsing = true;
+        }
+    }
+
+    void OnUseCanceled(InputAction.CallbackContext context)
+    {
+        Debug.Log("released P");
+        isHoldingP = false;
+        holdTime = 0f;
+    }
+    
+    void HoldHandling()
+    {
+        cauldron = interactable as Cauldron;
+        if (isHoldingP && cauldron != null && isUsing)
+        {
+            Debug.Log(holdTime);
+            holdTime += Time.deltaTime;
+            if (holdTime >= requiredHoldTime)
+            {
+                cauldron.Cook();
+                isUsing = false;
+                holdTime = 0f;
+            }
+        }
+        else
+        {
+            holdTime = 0f;
+            isUsing = false;
+        }
+    }
     private void OnInteractPerformed(InputAction.CallbackContext context)
     {
-        Cauldron cauldron = interactable as Cauldron;
+        cauldron = interactable as Cauldron;
         if (isHolding && interactable == cauldron && cauldron != null)
         {
             cauldron.PutIngredient(_heldIngredient);
@@ -65,6 +114,8 @@ public class PlayerInteract : MonoBehaviour
         }
     }
     
+    
+    // ReSharper disable Unity.PerformanceAnalysis
     private void Highlight()
     {
         Vector3 forwardOffset = transform.position + transform.forward + interactOffset;

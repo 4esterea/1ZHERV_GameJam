@@ -30,6 +30,11 @@ public class Cauldron : Interactable
         }
         Debug.Log("MAMA");
     }
+
+    public void Cook()
+    {
+        Debug.Log("Cooking");       
+    }
     
     public override void Interact()
     {
