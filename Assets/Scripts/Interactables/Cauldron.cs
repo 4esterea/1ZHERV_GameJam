@@ -25,16 +25,14 @@ public class Cauldron : Interactable
             if (_contains[i] == null)
             {
                 _contains[i] = ingredient;
+                Debug.Log(_contains[i].name);
+
                 ingredient.transform.position = transform.position*100 + Vector3.up * 2f;
-                ingredient.SetHeld(false);
-                ingredient.Interaction();
-                playerInteract.SetHolding(false);
-                playerInteract.SetHeldIngredient(null);
+                ingredient.gameObject.SetActive(false);
+
                 return;
             }
-            Debug.Log(_contains[i].name);
         }
-        Debug.Log("MAMA");
     }
 
     public void Cook()
@@ -81,6 +79,17 @@ public class Cauldron : Interactable
         _potion = null;
     }
     
+    public bool IsFull()
+    {
+        if (_contains[3] != null)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 
     // Update is called once per frame
     void Update()

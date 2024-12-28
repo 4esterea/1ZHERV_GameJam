@@ -98,7 +98,21 @@ public class PlayerInteract : MonoBehaviour
         cauldron = interactable as Cauldron;
         if (isHolding && interactable == cauldron && cauldron != null && _heldIngredient != null)
         {
-            cauldron.PutIngredient(_heldIngredient);
+            if (!cauldron.IsFull())
+            {
+                SetHolding(false);
+
+                _heldIngredient.SetHeld(false);
+
+                cauldron.PutIngredient(_heldIngredient);
+
+                _heldIngredient = null;
+            }
+            else
+            {
+                Debug.Log("Cauldron is full");
+            }
+
         } 
         else if (!isHolding && cauldron != null && cauldron.isReady())
         {
