@@ -11,8 +11,9 @@ public class PlayerInteract : MonoBehaviour
     [SerializeField] private Vector3 interactOffset;
     [SerializeField] private LayerMask interactLayer;
     [SerializeField] private bool isHolding;
-    private Ingridient _heldIngridient;
-    private HashSet<Ingridient> _highlightedIngridients = new HashSet<Ingridient>();
+    private Ingredient _heldIngredient;
+    [SerializeField] private Interactable interactable;
+    private HashSet<Ingredient> _highlightedIngridients = new HashSet<Ingredient>();
 
     private void Awake()
     {
@@ -42,20 +43,25 @@ public class PlayerInteract : MonoBehaviour
     {
         Highlight();
     }
-    
+
     private void OnInteractPerformed(InputAction.CallbackContext context)
     {
-        if (isHolding)
+        Cauldron cauldron = interactable as Cauldron;
+        if (isHolding && interactable == cauldron && cauldron != null)
+        {
+            cauldron.PutIngredient(_heldIngredient);
+        }
+        else if (isHolding)
         {
             isHolding = false;
-            Interact(_heldIngridient);
-            _heldIngridient = null;
+            Interact(_heldIngredient);
+            _heldIngredient = null;
         }
         else if (_highlightedIngridients.Count > 0)
         {
             isHolding = true;
-            _heldIngridient = _highlightedIngridients.First();
-            Interact(_heldIngridient);
+            _heldIngredient = _highlightedIngridients.First();
+            Interact(_heldIngredient);
         }
     }
     
@@ -64,51 +70,62 @@ public class PlayerInteract : MonoBehaviour
         Vector3 forwardOffset = transform.position + transform.forward + interactOffset;
         Quaternion rotation = transform.rotation;
         Collider[] colliders = Physics.OverlapBox(forwardOffset, Vector3.one / 2, rotation, interactLayer);
-
-        Ingridient closestIngridient = null;
+        
+        interactable = null;
+        Ingredient closestIngredient = null;
         float closestDistance = float.MaxValue;
 
         foreach (Collider collider in colliders)
         {
-            Ingridient ingridient = collider.GetComponent<Ingridient>();
-            if (ingridient != null)
+            Ingredient ingredient = collider.GetComponent<Ingredient>();
+            if (ingredient != null)
             {
-                float distance = Vector3.Distance(transform.position, ingridient.transform.position);
+                float distance = Vector3.Distance(transform.position, ingredient.transform.position);
                 if (distance < closestDistance)
                 {
                     closestDistance = distance;
-                    closestIngridient = ingridient;
+                    closestIngredient = ingredient;
                 }
             }
+            interactable = collider.GetComponent<Interactable>();
         }
 
-        foreach (Ingridient ingridient in _highlightedIngridients)
+        foreach (Ingredient ingredient in _highlightedIngridients)
         {
-            ingridient.SetHighlight(false);
+            ingredient.SetHighlight(false);
         }
 
         _highlightedIngridients.Clear();
 
-        if (closestIngridient != null)
+        if (closestIngredient != null)
         {
-            closestIngridient.SetHighlight(true);
-            _highlightedIngridients.Add(closestIngridient);
+            closestIngredient.SetHighlight(true);
+            _highlightedIngridients.Add(closestIngredient);
         }
     }
     
     
-    void Interact(Ingridient ingridient)
+    void Interact(Ingredient ingredient)
     {
         if (isHolding)
         {
-            ingridient.SetHeld(true);
+            ingredient.SetHeld(true);
         }
         else
         {
-            ingridient.SetHeld(false);
+            ingredient.SetHeld(false);
         }
     }
     
+    public void SetHolding(bool holding)
+    {
+        isHolding = holding;
+    }
+    
+    public void SetHeldIngredient(Ingredient ingredient)
+    {
+        _heldIngredient = ingredient;
+    }
     private void OnDrawGizmos()
          {
              Vector3 forwardOffset = transform.position + transform.forward + interactOffset;

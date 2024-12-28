@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class IngredientSphere : Ingridient
+public class IngredientSphere : Ingredient
 {
     private SphereCollider _collider;
 
@@ -15,7 +15,7 @@ public class IngredientSphere : Ingridient
         Interaction();
     }
 
-    private void Interaction()
+     public override void Interaction()
     {
         if (_isHeld)
         {

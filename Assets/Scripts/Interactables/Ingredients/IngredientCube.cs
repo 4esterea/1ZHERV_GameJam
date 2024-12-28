@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class IngredientCube : Ingridient
+public class IngredientCube : Ingredient
 {
     private BoxCollider _collider;
 
@@ -15,7 +15,7 @@ public class IngredientCube : Ingridient
         Interaction();
     }
 
-    private void Interaction()
+    public override void Interaction()
     {
         if (_isHeld)
         {

@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class Ingridient : MonoBehaviour
+public class Ingredient : MonoBehaviour
 {
     protected bool _isHeld;
     protected Rigidbody _rb;
@@ -45,4 +45,6 @@ public class Ingridient : MonoBehaviour
     {
         _isHeld = value;
     }
+
+    public virtual void Interaction(){}
 }
