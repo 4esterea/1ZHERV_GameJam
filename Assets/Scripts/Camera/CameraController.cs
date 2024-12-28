@@ -12,7 +12,7 @@ public class CameraController : MonoBehaviour
     void Update()
     {
         // Calculate the desired camera position based on the player's position
-        _targetPosition = new Vector3(Mathf.Clamp(player.position.x, 0.7173205f, 12.7538f), transform.position.y, transform.position.z);
+        _targetPosition = new Vector3(Mathf.Clamp(player.position.x, 2.916654f, 10.4425f), transform.position.y, transform.position.z);
         // Check if the camera needs to move
         if (Mathf.Abs(_targetPosition.x - transform.position.x) > 0.1f) 
         {
