@@ -4,9 +4,11 @@ using UnityEngine;
 public class Ingredient : MonoBehaviour
 {
     protected bool _isHeld;
+    protected bool _wasTossed = false;
     protected Rigidbody _rb;
     protected Transform _player;
     [SerializeField] protected Vector3 holdingOffset;
+    Cauldron _cauldron;
 
     private bool _isHighlighted;
     [SerializeField] private Material highlightMaterial;
@@ -14,9 +16,10 @@ public class Ingredient : MonoBehaviour
 
     private void OnEnable()
     {
-        _player = GameObject.Find("Capsule").transform;
+        _player = GameObject.Find("PlayerCapsule").transform;
         Debug.Log("Player " + _player);
         _rb = GetComponent<Rigidbody>();
+        _cauldron = GameObject.Find("Cauldron").GetComponent<Cauldron>();
     }
 
     protected virtual void Update()
@@ -36,6 +39,15 @@ public class Ingredient : MonoBehaviour
         }
     }
     
+    void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Cauldron"))
+        {
+            Debug.Log("Collision detected with " + collision.gameObject.name);
+            _cauldron.PutIngredient(this);
+        }
+    }
+    
     public void SetHighlight(bool value)
     {
         _isHighlighted = value;
@@ -45,6 +57,10 @@ public class Ingredient : MonoBehaviour
     {
         _isHeld = value;
     }
-
+    
+    public void SetTossed(bool value)
+    {
+        _wasTossed = value;
+    }
     public virtual void Interaction(){}
 }

@@ -13,11 +13,11 @@ public class PlayerInteract : MonoBehaviour
     [SerializeField] private LayerMask interactLayer;
     [SerializeField] private bool isHolding;
     private Ingredient _heldIngredient;
+    private Potion _heldPotion;
     [SerializeField] private Interactable interactable;
     private HashSet<Ingredient> _highlightedIngridients = new HashSet<Ingredient>();
     Cauldron cauldron;
     private bool isUsing = false;
-    private float useDuration = 2f;
     private bool isHoldingP = false;
     private float holdTime = 0f;
     private float requiredHoldTime = 2f;
@@ -96,20 +96,35 @@ public class PlayerInteract : MonoBehaviour
     private void OnInteractPerformed(InputAction.CallbackContext context)
     {
         cauldron = interactable as Cauldron;
-        if (isHolding && interactable == cauldron && cauldron != null)
+        if (isHolding && interactable == cauldron && cauldron != null && _heldIngredient != null)
         {
             cauldron.PutIngredient(_heldIngredient);
+        } 
+        else if (!isHolding && cauldron != null && cauldron.isReady())
+        {
+            isHolding = true;
+            _heldPotion = cauldron.GetPotion();
+            _heldPotion.SetHeld(true);
+            _heldPotion.SetPotionReady(false);
+            cauldron.DeletePotion();
         }
-        else if (isHolding)
+        else if (isHolding && _heldIngredient != null)
         {
             isHolding = false;
             Interact(_heldIngredient);
             _heldIngredient = null;
         }
+        else if (isHolding && _heldIngredient == null)
+        {
+            isHolding = false;
+            _heldPotion.SetHeld(false);            
+            _heldPotion = null;
+        }
         else if (_highlightedIngridients.Count > 0)
         {
             isHolding = true;
             _heldIngredient = _highlightedIngridients.First();
+            _heldIngredient.SetTossed(false);
             Interact(_heldIngredient);
         }
     }

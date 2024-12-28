@@ -29,6 +29,11 @@ public class IngredientSphere : Ingredient
         {
             _collider.enabled = true;
             _rb.isKinematic = false;
+            if (!_wasTossed)
+            {
+                _rb.AddForce((transform.forward + Vector3.up*2) * 6f, ForceMode.Impulse);
+                _wasTossed = true;
+            }
         }
     }
 }
