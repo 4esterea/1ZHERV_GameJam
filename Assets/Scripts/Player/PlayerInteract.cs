@@ -11,6 +11,13 @@ public class PlayerInteract : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Highlight();
+        //Interact();
+    }
+    
+    
+    private void Highlight()
+    {
         Vector3 forwardOffset = transform.position + transform.forward + interactOffset;
         Quaternion rotation = transform.rotation;
         Collider[] colliders = Physics.OverlapBox(forwardOffset, Vector3.one / 2, rotation, interactLayer);
@@ -45,12 +52,22 @@ public class PlayerInteract : MonoBehaviour
             highlightedIngridients.Add(closestIngridient);
         }
     }
-
+    
+    
+    // void Interact()
+    // {
+    //     if (_input.Player.Interact.triggered )
+    //     {
+    //         
+    //     }
+    // }
+    
     private void OnDrawGizmos()
-    {
-        Vector3 forwardOffset = transform.position + transform.forward + interactOffset;
-        Quaternion rotation = transform.rotation;
-        Gizmos.matrix = Matrix4x4.TRS(forwardOffset, rotation, Vector3.one);
-        Gizmos.DrawWireCube(Vector3.zero, Vector3.one);
-    }
+         {
+             Vector3 forwardOffset = transform.position + transform.forward + interactOffset;
+             Quaternion rotation = transform.rotation;
+             Gizmos.matrix = Matrix4x4.TRS(forwardOffset, rotation, Vector3.one);
+             Gizmos.DrawWireCube(Vector3.zero, Vector3.one);
+         }
+         
 }

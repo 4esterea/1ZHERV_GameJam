@@ -10,6 +10,7 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody _rb;
     [SerializeField] private float speed = 10f;
     [SerializeField] private float rotationSpeed = 15f;
+
     private void Awake()
     {
         _input = new Input();
@@ -67,7 +68,9 @@ public class PlayerMovement : MonoBehaviour
             // Smoothly rotate the orientation towards the target direction
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
         }
+
         Debug.DrawRay(transform.position, transform.forward * 5, Color.red);
 
     }
+
 }

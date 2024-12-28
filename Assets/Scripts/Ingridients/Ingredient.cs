@@ -29,4 +29,9 @@ public class Ingridient : MonoBehaviour
     {
         _isHighlighted = value;
     }
+    
+    public void SetHeld(bool value)
+    {
+        _isHeld = value;
+    }
 }
