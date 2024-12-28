@@ -1,20 +1,63 @@
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerInteract : MonoBehaviour
 {
+    private Input _input;
     [SerializeField] private Vector3 interactOffset;
     [SerializeField] private LayerMask interactLayer;
-    private HashSet<Ingridient> highlightedIngridients = new HashSet<Ingridient>();
+    [SerializeField] private bool isHolding;
+    private Ingridient _heldIngridient;
+    private HashSet<Ingridient> _highlightedIngridients = new HashSet<Ingridient>();
+
+    private void Awake()
+    {
+        _input = new Input();
+    }
+
+    private void OnEnable()
+    {
+        if (!_input.Player.enabled)
+        {
+            _input.Player.Enable();
+        }
+
+        _input.Player.Interact.performed += OnInteractPerformed;
+    }
+
+    private void OnDisable()
+    {
+        if (_input.Player.enabled)
+        {
+            _input.Player.Disable();
+        }
+    }
+
     // Update is called once per frame
     void Update()
     {
         Highlight();
-        //Interact();
     }
     
+    private void OnInteractPerformed(InputAction.CallbackContext context)
+    {
+        if (isHolding)
+        {
+            isHolding = false;
+            Interact(_heldIngridient);
+            _heldIngridient = null;
+        }
+        else if (_highlightedIngridients.Count > 0)
+        {
+            isHolding = true;
+            _heldIngridient = _highlightedIngridients.First();
+            Interact(_heldIngridient);
+        }
+    }
     
     private void Highlight()
     {
@@ -39,28 +82,32 @@ public class PlayerInteract : MonoBehaviour
             }
         }
 
-        foreach (Ingridient ingridient in highlightedIngridients)
+        foreach (Ingridient ingridient in _highlightedIngridients)
         {
             ingridient.SetHighlight(false);
         }
 
-        highlightedIngridients.Clear();
+        _highlightedIngridients.Clear();
 
         if (closestIngridient != null)
         {
             closestIngridient.SetHighlight(true);
-            highlightedIngridients.Add(closestIngridient);
+            _highlightedIngridients.Add(closestIngridient);
         }
     }
     
     
-    // void Interact()
-    // {
-    //     if (_input.Player.Interact.triggered )
-    //     {
-    //         
-    //     }
-    // }
+    void Interact(Ingridient ingridient)
+    {
+        if (isHolding)
+        {
+            ingridient.SetHeld(true);
+        }
+        else
+        {
+            ingridient.SetHeld(false);
+        }
+    }
     
     private void OnDrawGizmos()
          {

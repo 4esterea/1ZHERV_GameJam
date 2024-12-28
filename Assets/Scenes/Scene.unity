@@ -306,6 +306,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   highlightMaterial: {fileID: 2100000, guid: efe26027cacc84b409062a6cff9b90c4, type: 2}
   defaultMaterial: {fileID: 2100000, guid: aa60dc0f504f8eb41974f50e1528f594, type: 2}
+  player: {fileID: 859094920}
+  holdingOffset: {x: 0, y: 0, z: 0}
 --- !u!1 &329006521
 GameObject:
   m_ObjectHideFlags: 0
@@ -1016,6 +1018,7 @@ MonoBehaviour:
   interactLayer:
     serializedVersion: 2
     m_Bits: 64
+  isHolding: 0
 --- !u!114 &859094923
 MonoBehaviour:
   m_ObjectHideFlags: 0

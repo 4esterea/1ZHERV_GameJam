@@ -19,7 +19,11 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnEnable()
     {
-        _input.Player.Enable();
+        if (!_input.Player.enabled)
+        {
+            _input.Player.Enable();
+        }
+
         _input.Player.Move.performed += OnMovePerformed;
         _input.Player.Move.canceled += OnMoveCanceled;
     }
@@ -28,7 +32,10 @@ public class PlayerMovement : MonoBehaviour
     {
         _input.Player.Move.performed -= OnMovePerformed;
         _input.Player.Move.canceled -= OnMoveCanceled;
-        _input.Player.Disable();
+        if (_input.Player.enabled)
+        {
+            _input.Player.Disable();
+        }
     }
 
     private void OnMovePerformed(InputAction.CallbackContext context)
