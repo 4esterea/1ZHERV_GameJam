@@ -7,8 +7,6 @@ public class FragileCrystal : Ingredient
         base.OnCollisionEnter(collision);
         if (!collision.gameObject.CompareTag("Player") && !collision.gameObject.CompareTag("Cauldron"))
         {
-            // Handle collision
-            Destroy(transform.parent.gameObject);
             Destroy(gameObject);
         }
     }

@@ -23,7 +23,7 @@ public class Crate : Interactable
         Interact();
     }
 
-    private void OnEnable()
+    protected void OnEnable()
     {
         _rb = GetComponent<Rigidbody>();
         _player = FindFirstObjectByType<PlayerInteract>();
