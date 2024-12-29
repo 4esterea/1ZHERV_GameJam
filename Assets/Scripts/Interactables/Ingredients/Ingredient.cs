@@ -5,6 +5,7 @@ public class Ingredient : MonoBehaviour
 {
     protected bool _isHeld;
     protected bool _wasTossed = false;
+    protected bool _wasHeld = false;
     protected Rigidbody _rb;
     protected Transform _player;
     [SerializeField] protected Vector3 holdingOffset;
@@ -32,7 +33,7 @@ public class Ingredient : MonoBehaviour
 
     protected virtual void Highlight()
     {
-
+       
     }
     
     protected void OnCollisionEnter(Collision collision)
@@ -59,10 +60,11 @@ public class Ingredient : MonoBehaviour
         {
             _collider.enabled = true;
             _rb.isKinematic = false;
-            if (!_wasTossed)
+            if (!_wasTossed && _wasHeld)
             {
                 _rb.AddForce((transform.forward + Vector3.up*2) * 6f, ForceMode.Impulse);
                 _wasTossed = true;
+                _wasHeld = false;
             }
         }
     }
@@ -77,6 +79,10 @@ public class Ingredient : MonoBehaviour
         _isHeld = value;
     }
     
+    public void SetWasHeld(bool value)
+    {
+        _wasHeld = value;
+    }
     public void SetTossed(bool value)
     {
         _wasTossed = value;

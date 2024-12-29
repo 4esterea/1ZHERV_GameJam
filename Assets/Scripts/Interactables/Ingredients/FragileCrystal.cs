@@ -33,8 +33,8 @@ public class FragileCrystal : Ingredient
     // Update is called once per frame
     protected override void Update()
     {
-        Highlight();
-
         base.Update();
+        Highlight();
     }
+    
 }

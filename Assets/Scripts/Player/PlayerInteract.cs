@@ -17,6 +17,7 @@ public class PlayerInteract : MonoBehaviour
     [SerializeField] private Interactable interactable;
     private HashSet<Ingredient> _highlightedIngridients = new HashSet<Ingredient>();
     Cauldron cauldron;
+    Crate crate;
     private bool isUsing = false;
     private bool isHoldingP = false;
     private float holdTime = 0f;
@@ -96,6 +97,7 @@ public class PlayerInteract : MonoBehaviour
     private void OnInteractPerformed(InputAction.CallbackContext context)
     {
         cauldron = interactable as Cauldron;
+        crate = interactable as Crate;
         if (isHolding && interactable == cauldron && cauldron != null && _heldIngredient != null)
         {
             if (!cauldron.IsFull())
@@ -125,6 +127,7 @@ public class PlayerInteract : MonoBehaviour
         else if (isHolding && _heldIngredient != null)
         {
             isHolding = false;
+            _heldIngredient.SetWasHeld(true);
             Interact(_heldIngredient);
             _heldIngredient = null;
         }
@@ -134,6 +137,13 @@ public class PlayerInteract : MonoBehaviour
             _heldPotion.SetHeld(false);            
             _heldPotion = null;
         }
+        else if (crate != null && !isHolding)
+        {
+            isHolding = true;
+            _heldIngredient = crate.GrabIngredient();
+            _heldIngredient.SetTossed(false);
+            Interact(_heldIngredient);
+        }
         else if (_highlightedIngridients.Count > 0)
         {
             isHolding = true;
@@ -141,6 +151,7 @@ public class PlayerInteract : MonoBehaviour
             _heldIngredient.SetTossed(false);
             Interact(_heldIngredient);
         }
+        
     }
     
     

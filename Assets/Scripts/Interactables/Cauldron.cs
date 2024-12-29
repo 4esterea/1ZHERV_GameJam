@@ -13,11 +13,6 @@ public class Cauldron : Interactable
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
-    // private void Awake()
-    // {
-    //     _playerInteract = FindFirstObjectByType<PlayerInteract>();
-    // }
-
     public void PutIngredient(Ingredient ingredient)
     {
         for (int i = 0; i < _contains.Length; i++)
@@ -46,6 +41,7 @@ public class Cauldron : Interactable
         {
             if (ingredient != null)
             {
+                Destroy(ingredient.transform.parent.gameObject);
                 Destroy(ingredient.gameObject);
             }
         } 
