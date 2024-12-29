@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -51,6 +52,7 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //CheckPlayerPos();
         Move();
         Rotate();
     }
@@ -80,4 +82,59 @@ public class PlayerMovement : MonoBehaviour
 
     }
 
+
+    private void OnTriggerEnter(Collider other)
+    {
+        // On trigger with Exit layer mask
+        if (other.gameObject.layer == LayerMask.NameToLayer("Exit") && Camera.main.GetComponent<CameraController>().GetAlchemyRoom())
+        {
+            // Teleport the player to the alchemy room
+            Camera.main.GetComponent<CameraController>().SetAlchemyRoom(false);
+            StartCoroutine(MovePlayerToCustomers());
+
+        }
+        else
+        {
+            Camera.main.GetComponent<CameraController>().SetAlchemyRoom(true);
+            StartCoroutine(MovePlayerToAlchemy());
+
+        }
+    }
+
+    private void CheckPlayerPos()
+    {
+        if (transform.position.x < -16f && Camera.main.GetComponent<CameraController>().GetAlchemyRoom())
+        {
+            Camera.main.GetComponent<CameraController>().SetAlchemyRoom(false);
+            // Start couroutine to move player to the left for a few seconds
+        }
+        else
+        {
+            Camera.main.GetComponent<CameraController>().SetAlchemyRoom(true);
+
+        }
+    }
+
+    private IEnumerator MovePlayerToCustomers()
+    {
+        float time = 0;
+        while (time < 0.5f)
+        {
+            time += Time.deltaTime;
+            transform.position += new Vector3(-10, 0, 0) * Time.deltaTime;
+            yield return null;
+        }
+    }
+
+    private IEnumerator MovePlayerToAlchemy()
+    {
+
+        float time = 0;
+        while (time < 0.5f)
+        {
+            time += Time.deltaTime;
+            transform.position += new Vector3(10, 0, 0) * Time.deltaTime;
+            yield return null;
+        }
+    }
 }
