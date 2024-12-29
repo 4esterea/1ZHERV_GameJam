@@ -1,8 +1,15 @@
+using System;
+using System.Linq;
 using UnityEngine;
 
 public class Crate : Interactable
 {
-    private Ingredient[] _contains = new Ingredient[5];
+    private int _containsCounter = 5;
+    private bool _wasTaken = false;
+    private bool _isHeld = false;
+    private Collider _collider;
+    private Rigidbody _rb;
+    private PlayerInteract _player;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -13,24 +20,57 @@ public class Crate : Interactable
     // Update is called once per frame
     void Update()
     {
+        Interact();
+    }
+
+    private void OnEnable()
+    {
+        _rb = GetComponent<Rigidbody>();
+        _player = FindFirstObjectByType<PlayerInteract>();
+        _collider = GetComponent<MeshCollider>();
+    }
+
+    public override void Interact()
+    {
+        if (_isHeld)
+        {
+            _rb.isKinematic = true;
+            _collider.enabled = false;
+            transform.position = _player.transform.position + _player.transform.forward * 1.5f + Vector3.up * .7f;
+            Quaternion rotation = Quaternion.LookRotation(_player.transform.forward, Vector3.up) * Quaternion.Euler(0, 90, 0);
+            transform.rotation = rotation;
+        }
+        else
+        {
+            _rb.isKinematic = false;
+            _collider.enabled = true;
+        }
         
     }
     
-    public override void Interact()
+     public virtual Ingredient GrabIngredient()
     {
-         
+        // if (_containsCounter > 0)
+        // {
+        //     _containsCounter--;
+        //     return Instantiate(FindObjectOfType<Ingredient>());
+        // }
+        // Debug.Log("No ingredients in the crate");
+        return null;
     }
     
-    public Ingredient GrabIngredient()
+    public bool WasTaken()
     {
-        for (int i = 4; i > -1; i--)
-        {
-            if (_contains[i] != null)
-            {
-                return _contains[i];
-            }
-        }
-        Debug.Log("No ingredients in the crate");
-        return null;
+        return _wasTaken;
+    }
+    
+    public void SetWasTaken(bool wasTaken)
+    {
+        _wasTaken = wasTaken;
+    }
+    
+    public void SetIsHeld(bool isHeld)
+    {
+        _isHeld = isHeld;
     }
 }

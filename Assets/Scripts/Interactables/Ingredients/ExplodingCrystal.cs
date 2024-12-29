@@ -23,7 +23,6 @@ public class ExplodingCrystal : Ingredient
         if (_isHighlighted)
         {
             materials[1] = highlightMaterial;
-            Debug.Log("Highlighting");
         }
         else
         {

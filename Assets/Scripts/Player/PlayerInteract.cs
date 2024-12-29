@@ -22,6 +22,7 @@ public class PlayerInteract : MonoBehaviour
     private bool isHoldingP = false;
     private float holdTime = 0f;
     private float requiredHoldTime = 2f;
+    private Crate holdingCrate = null;
     private void Awake()
     {
         _input = new Input();
@@ -131,7 +132,7 @@ public class PlayerInteract : MonoBehaviour
             Interact(_heldIngredient);
             _heldIngredient = null;
         }
-        else if (isHolding && _heldIngredient == null)
+        else if (isHolding && _heldIngredient == null && holdingCrate == null)
         {
             isHolding = false;
             _heldPotion.SetHeld(false);            
@@ -139,10 +140,30 @@ public class PlayerInteract : MonoBehaviour
         }
         else if (crate != null && !isHolding)
         {
-            isHolding = true;
-            _heldIngredient = crate.GrabIngredient();
-            _heldIngredient.SetTossed(false);
-            Interact(_heldIngredient);
+            if (crate.WasTaken())
+            {
+                _heldIngredient = crate.GrabIngredient();
+                if (_heldIngredient != null)
+                {
+                    isHolding = true;
+                    _heldIngredient.SetWasHeld(true);
+                    _heldIngredient.SetInCrate(false);
+                    Interact(_heldIngredient);
+                }
+            }
+            else
+            {
+                isHolding = true;
+                holdingCrate = crate;
+                crate.SetIsHeld(true);
+                crate.SetWasTaken(true);
+            }
+        }
+        else if (holdingCrate != null)
+        {
+            isHolding = false;
+            holdingCrate.SetIsHeld(false);
+            holdingCrate = null;
         }
         else if (_highlightedIngridients.Count > 0)
         {

@@ -24,7 +24,6 @@ public class VoidOrb : Ingredient
         {
             materials[0] = highlightMaterial;
             materials[1] = highlightMaterial;
-            Debug.Log("Highlighting");
         }
         else
         {

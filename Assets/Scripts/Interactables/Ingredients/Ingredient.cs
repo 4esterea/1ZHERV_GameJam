@@ -8,6 +8,7 @@ public class Ingredient : MonoBehaviour
     protected bool _wasHeld = false;
     protected Rigidbody _rb;
     protected Transform _player;
+    protected bool _isInCrate = true;
     [SerializeField] protected Vector3 holdingOffset;
     Cauldron _cauldron;
     private MeshCollider _collider;
@@ -19,10 +20,11 @@ public class Ingredient : MonoBehaviour
     private void OnEnable()
     {
         _player = GameObject.Find("PlayerCapsule").transform;
-        Debug.Log("Player " + _player);
         _rb = GetComponent<Rigidbody>();
         _cauldron = GameObject.Find("Cauldron").GetComponent<Cauldron>();
         _collider = GetComponent<MeshCollider>();
+        _rb.isKinematic = true;
+        _collider.enabled = false;
     }
     
 
@@ -48,6 +50,10 @@ public class Ingredient : MonoBehaviour
     
     public void Interaction()
     {
+        if (_isInCrate)
+        {
+            return;
+        }
         if (_isHeld)
         {
             _rb.isKinematic = true;
@@ -86,5 +92,10 @@ public class Ingredient : MonoBehaviour
     public void SetTossed(bool value)
     {
         _wasTossed = value;
+    }
+    
+    public void SetInCrate(bool value)
+    {
+        _isInCrate = value;
     }
 }

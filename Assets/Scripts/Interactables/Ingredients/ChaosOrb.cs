@@ -23,7 +23,6 @@ public class ChaosOrb : Ingredient
         if (_isHighlighted)
         {
             materials[0] = highlightMaterial;
-            Debug.Log("Highlighting");
         }
         else
         {
