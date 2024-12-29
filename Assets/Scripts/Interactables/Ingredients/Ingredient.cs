@@ -11,9 +11,9 @@ public class Ingredient : MonoBehaviour
     Cauldron _cauldron;
     private MeshCollider _collider;
 
-    private bool _isHighlighted;
-    [SerializeField] private Material highlightMaterial;
-    [SerializeField] private Material defaultMaterial;
+    protected bool _isHighlighted;
+    [SerializeField] protected Material highlightMaterial;
+    [SerializeField] protected Material defaultMaterial;
 
     private void OnEnable()
     {
@@ -27,24 +27,12 @@ public class Ingredient : MonoBehaviour
 
     protected virtual void Update()
     {
-        Highlight();
         Interaction();
     }
 
-    void Highlight()
+    protected virtual void Highlight()
     {
-        Renderer renderer = GetComponent<Renderer>();
-        Material[] materials = renderer.materials;
-        if (_isHighlighted)
-        {
-            materials[1] = highlightMaterial;
-        }
-        else
-        {
-            materials[1] = defaultMaterial;
-        }
 
-        renderer.materials = materials;
     }
     
     protected void OnCollisionEnter(Collision collision)

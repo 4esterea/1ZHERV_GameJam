@@ -13,16 +13,28 @@ public class FragileCrystal : Ingredient
             // Destroy(gameObject);
         }
     }
-    
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+
+    protected override void Highlight()
     {
-        
+        Renderer renderer = GetComponent<Renderer>();
+        Material[] materials = renderer.materials;
+        if (_isHighlighted)
+        {
+            materials[1] = highlightMaterial;
+        }
+        else
+        {
+            materials[1] = defaultMaterial;
+        }
+
+        renderer.materials = materials;
     }
 
     // Update is called once per frame
-    void Update()
+    protected override void Update()
     {
+        Highlight();
+
         base.Update();
     }
 }
