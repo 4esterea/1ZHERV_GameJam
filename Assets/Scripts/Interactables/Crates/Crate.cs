@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class Crate : Interactable
 {
-    private int _containsCounter = 5;
-    private bool _wasTaken = false;
-    private bool _isHeld = false;
-    private Collider _collider;
-    private Rigidbody _rb;
-    private PlayerInteract _player;
+    protected int _containsCounter = 5;
+    protected bool _wasTaken = false;
+    protected bool _isHeld = false;
+    protected Collider _collider;
+    protected Rigidbody _rb;
+    protected PlayerInteract _player;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -18,7 +18,7 @@ public class Crate : Interactable
     }
 
     // Update is called once per frame
-    void Update()
+    protected void Update()
     {
         Interact();
     }

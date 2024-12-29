@@ -41,7 +41,6 @@ public class Cauldron : Interactable
         {
             if (ingredient != null)
             {
-                Destroy(ingredient.transform.parent.gameObject);
                 Destroy(ingredient.gameObject);
             }
         } 
