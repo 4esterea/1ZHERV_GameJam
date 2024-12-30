@@ -7,12 +7,13 @@ public class Potion : MonoBehaviour
     private CapsuleCollider _collider;
     private Rigidbody _rb;
     private bool _wasTossed = false;
-    [SerializeField] private Transform player;
+    private Transform player;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void OnEnable()
     {
         _collider = GetComponent<CapsuleCollider>();
         _rb = GetComponent<Rigidbody>();
+        player = GameObject.Find("PlayerCapsule").transform;
     }
 
     // Update is called once per frame

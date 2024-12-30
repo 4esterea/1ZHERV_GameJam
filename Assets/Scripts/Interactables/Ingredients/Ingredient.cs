@@ -66,7 +66,7 @@ public class Ingredient : MonoBehaviour
             _rb.isKinematic = false;
             if (!_wasTossed && _wasHeld)
             {
-                _rb.AddForce((transform.forward + Vector3.up*2) * 6f, ForceMode.Impulse);
+                _rb.AddForce((transform.forward + Vector3.up*2) * 60f, ForceMode.Impulse);
                 _wasTossed = true;
                 _wasHeld = false;
             }
