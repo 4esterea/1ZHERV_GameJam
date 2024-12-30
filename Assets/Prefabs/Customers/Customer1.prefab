@@ -79,5 +79,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isBeingServed: 0
   patienceTimer: 25
-  satisfactionTimer: 15
+  satisfactionTimer: 3
   patienceSliderPrefab: {fileID: 9213496730492629787, guid: 61dd55a113cde694c8e814d23efa4c5a, type: 3}

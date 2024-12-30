@@ -25,6 +25,8 @@ public class CustomerManager : MonoBehaviour
     
     private int counter = 0;
 
+    [SerializeField] private PotionReceiver _potionReceiver;
+    
     private void Update()
     {
         if (counter < 5 && canSpawn)
@@ -67,11 +69,27 @@ public class CustomerManager : MonoBehaviour
         if (customerQueue[0] != null)
         {
             customerQueue[0].SetFirst(true);
+
+            if (_potionReceiver.GetIsPotionReceived())
+            {
+                if (_potionReceiver.CompareCustomerPotion(customerQueue[0].GetDesiredPotion()))
+                {
+                    Debug.Log("Customer satisfied");
+                    // Set the customer as satisfied
+                    customerQueue[0].SetIsSatisfied(true);
+                    _potionReceiver.DestroyPotion();
+                }
+                else
+                {
+                    Debug.Log("Wrong potion");
+                    _potionReceiver.DestroyPotion();
+                }
+            }
         }
         
         for (int i = 0; i < customerQueue.Length; i++)
         {
-            if (customerQueue[i] != null && customerQueue[i].GetIsUnsatisfied())
+            if (customerQueue[i] != null && customerQueue[i].GetIsUnsatisfied() || customerQueue[i] != null && customerQueue[i].GetIsSatisfied())
             {
                 for (int j = i; j < customerQueue.Length - 1; j++)
                 {
