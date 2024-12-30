@@ -255,9 +255,9 @@ MonoBehaviour:
   greenPotionPrefab: {fileID: 3193858834555070761, guid: 5e2938b92a646144092d27266642d6fa, type: 3}
   bluePotionPrefab: {fileID: 925767023564859308, guid: 78fc047b9d2161f45a54e4f18ae8af26, type: 3}
   recipeBookObj: {fileID: 1086381879}
-  explosionForce: 300
+  explosionForce: 350
   explosionRadius: 5.67
-  upwardsModifier: 3
+  upwardsModifier: 7
   explosionLayerMask:
     serializedVersion: 2
     m_Bits: 64
@@ -988,7 +988,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8164078558771037576, guid: cb5de518d858a6d45bb8182e7c82a472, type: 3}
       propertyPath: m_Name
-      value: S
+      value: Slime
       objectReference: {fileID: 0}
     - target: {fileID: 8164078558771037576, guid: cb5de518d858a6d45bb8182e7c82a472, type: 3}
       propertyPath: m_Layer
@@ -1115,7 +1115,7 @@ PrefabInstance:
       objectReference: {fileID: -5186266747319645695, guid: 478dc06ccb8185843bdc1e4b4d2bb373, type: 3}
     - target: {fileID: 919132149155446097, guid: 478dc06ccb8185843bdc1e4b4d2bb373, type: 3}
       propertyPath: m_Name
-      value: Moss
+      value: moss
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 478dc06ccb8185843bdc1e4b4d2bb373, type: 3}
       propertyPath: m_Layer
@@ -1151,7 +1151,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8164078558771037576, guid: 478dc06ccb8185843bdc1e4b4d2bb373, type: 3}
       propertyPath: m_Name
-      value: M
+      value: Moss
       objectReference: {fileID: 0}
     - target: {fileID: 8164078558771037576, guid: 478dc06ccb8185843bdc1e4b4d2bb373, type: 3}
       propertyPath: m_Layer
@@ -2183,7 +2183,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8164078558771037576, guid: 91eec2887e6225e4584382ddbf8633a8, type: 3}
       propertyPath: m_Name
-      value: EC
+      value: ExplodingCrystal
       objectReference: {fileID: 0}
     - target: {fileID: 8164078558771037576, guid: 91eec2887e6225e4584382ddbf8633a8, type: 3}
       propertyPath: m_Layer
@@ -2757,7 +2757,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8164078558771037576, guid: 457fd1acb6508334e9c2b02bbfac2af1, type: 3}
       propertyPath: m_Name
-      value: HS
+      value: HotSphere
       objectReference: {fileID: 0}
     - target: {fileID: 8164078558771037576, guid: 457fd1acb6508334e9c2b02bbfac2af1, type: 3}
       propertyPath: m_Layer
@@ -3302,7 +3302,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 039af4b6ea2f1494fb26572eae3b71ca, type: 3}
       propertyPath: m_Name
-      value: VoidOrb
+      value: voidOrb
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 039af4b6ea2f1494fb26572eae3b71ca, type: 3}
       propertyPath: m_Layer
@@ -3338,7 +3338,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8164078558771037576, guid: 039af4b6ea2f1494fb26572eae3b71ca, type: 3}
       propertyPath: m_Name
-      value: VO
+      value: VoidOrb
       objectReference: {fileID: 0}
     - target: {fileID: 8164078558771037576, guid: 039af4b6ea2f1494fb26572eae3b71ca, type: 3}
       propertyPath: m_Layer
@@ -5791,7 +5791,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 859094915}
   serializedVersion: 4
-  m_Mass: 15
+  m_Mass: 30
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -5914,8 +5914,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11ad69727d2196a44a57ba7c7bb99a09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 50000
+  speed: 40000
   rotationSpeed: 15
+  drag: 1.5
 --- !u!114 &859094922
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6147,7 +6148,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8164078558771037576, guid: adfde2a65f6a9174888e4551b5c44f35, type: 3}
       propertyPath: m_Name
-      value: FC
+      value: FragileCrystal
       objectReference: {fileID: 0}
     - target: {fileID: 8164078558771037576, guid: adfde2a65f6a9174888e4551b5c44f35, type: 3}
       propertyPath: m_Layer
@@ -12049,7 +12050,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 78be6e28fbd5ed04b81856889adfb59b, type: 3}
       propertyPath: m_Name
-      value: ChaosOrb
+      value: chaosOrb
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 78be6e28fbd5ed04b81856889adfb59b, type: 3}
       propertyPath: m_Layer
@@ -12085,7 +12086,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8164078558771037576, guid: 78be6e28fbd5ed04b81856889adfb59b, type: 3}
       propertyPath: m_Name
-      value: CO
+      value: ChaosOrb
       objectReference: {fileID: 0}
     - target: {fileID: 8164078558771037576, guid: 78be6e28fbd5ed04b81856889adfb59b, type: 3}
       propertyPath: m_Layer

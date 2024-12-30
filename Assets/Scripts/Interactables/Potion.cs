@@ -14,6 +14,7 @@ public class Potion : MonoBehaviour
         _collider = GetComponent<CapsuleCollider>();
         _rb = GetComponent<Rigidbody>();
         player = GameObject.Find("PlayerCapsule").transform;
+        transform.rotation = Quaternion.Euler(0, 0, 150f);
     }
 
     // Update is called once per frame
@@ -21,7 +22,7 @@ public class Potion : MonoBehaviour
     {
         if (isPotionReady && !isBeingHeld)
         {
-            transform.Rotate(new Vector3(0, .15f, .1f), .5f);
+            transform.Rotate(new Vector3(0, .15f, 0), .5f);
         }
         else if (!isPotionReady && isBeingHeld)
         {

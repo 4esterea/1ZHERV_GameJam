@@ -11,6 +11,7 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody _rb;
     [SerializeField] private float speed = 10f;
     [SerializeField] private float rotationSpeed = 15f;
+    [SerializeField] private float drag;
 
     private void Awake()
     {
@@ -61,6 +62,10 @@ public class PlayerMovement : MonoBehaviour
     {
         Vector3 move = new Vector3(_moveInput.x, 0, _moveInput.y) * Time.deltaTime;
         _rb.AddForce(move * speed, ForceMode.Force);
+
+        // Apply drag to reduce the velocity over time
+        Vector3 horizontalVelocity = new Vector3(_rb.linearVelocity.x, 0, _rb.linearVelocity.z);
+        _rb.AddForce(-horizontalVelocity * drag, ForceMode.Acceleration);
     }
 
     void Rotate()

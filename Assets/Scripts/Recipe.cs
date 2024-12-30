@@ -23,7 +23,6 @@ public class Recipe : MonoBehaviour
             if (_ingredients[i] == null)
             {
                 _ingredients[i] = ingredient;
-                Debug.Log(ingredient.name);
                 break;
             }
         }

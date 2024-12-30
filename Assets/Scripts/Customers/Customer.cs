@@ -138,7 +138,10 @@ public class Customer : MonoBehaviour
             if (isBeingServed)
             {
                 // Destroy the patience slider
-                Destroy(patienceSlider.gameObject);
+                if (patienceSlider != null) 
+                {
+                    Destroy(patienceSlider.gameObject);
+                }
                 yield break;
             }
             _patienceTimer -= Time.deltaTime;
