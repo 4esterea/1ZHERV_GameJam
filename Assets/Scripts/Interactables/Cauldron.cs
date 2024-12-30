@@ -58,6 +58,7 @@ public class Cauldron : Interactable
             {
                 Ingredient recipeIngredient = recipe.GetIngredients()[i];
                 Ingredient containsIngredient = _contains[i];
+                Debug.Log((recipeIngredient == null ? "null" : recipe.GetIngredients()[i].name) + " c= " + (_contains[i] == null ? "null" : _contains[i].name));
                 if (recipeIngredient == null && containsIngredient == null)
                 {
                     continue;
@@ -70,7 +71,6 @@ public class Cauldron : Interactable
                 }
                 if (recipeIngredient.name != containsIngredient.name)
                 {
-                    Debug.Log(recipeIngredient == null ? "null" : recipe.GetIngredients()[i].name + " != " + (_contains[i] == null ? "null" : _contains[i].name));
                     match = false;
                 }
             }

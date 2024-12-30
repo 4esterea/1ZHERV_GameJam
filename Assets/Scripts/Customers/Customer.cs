@@ -108,7 +108,6 @@ public class Customer : MonoBehaviour
         
         if (!isBeingServed && transform.position == targetPosition && isFirst)
         {
-            Debug.Log("Customer is waiting");
 
             satisfactionSlider.transform.position = transform.position + new Vector3(0, 3f, 0);
             satisfactionSlider.gameObject.SetActive(true);

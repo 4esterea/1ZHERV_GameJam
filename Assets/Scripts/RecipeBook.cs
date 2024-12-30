@@ -10,6 +10,7 @@ public class RecipeBook : MonoBehaviour
     [SerializeField] private Ingredient[] ingredients;
     private Recipe[] _recipeBook = new Recipe[4];
     private HashSet<string> uniqueRecipes = new HashSet<string>();
+    [SerializeField] private RecipeBookUI recipeBookUI;
 
     void Start()
     {
@@ -43,14 +44,14 @@ public class RecipeBook : MonoBehaviour
                 ingredientNames.Add(ingredient.name);
                 recipe.AddIngredient(ingredient);
             }
-
-            ingredientNames.Sort();
+            
             string recipeKey = string.Join(" , ", ingredientNames);
 
             if (!uniqueRecipes.Contains(recipeKey))
             {
                 uniqueRecipes.Add(recipeKey);
                 Debug.Log(potion + " : " + ingredientCount + " ingredient(s): " + recipeKey);
+                recipeBookUI.SetRecipes(potion, recipeKey);
                 return recipe;
             }
             else

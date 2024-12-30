@@ -31,6 +31,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "ToggleRecipeBook",
+                    "type": "Button",
+                    "id": "48ab6969-da55-4f0c-ad06-eeb36adba948",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -174,6 +183,17 @@
                     "processors": "",
                     "groups": ";KBM",
                     "action": "Use",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9bda554f-b2c9-4221-b262-798e64ae4daf",
+                    "path": "<Keyboard>/tab",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";KBM",
+                    "action": "ToggleRecipeBook",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Linq;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -12,6 +13,7 @@ public class PlayerInteract : MonoBehaviour
     [SerializeField] private Vector3 interactOffset;
     [SerializeField] private LayerMask interactLayer;
     [SerializeField] private bool isHolding;
+    [SerializeField] private RecipeBookUI recipeBookUI;
     private Ingredient _heldIngredient;
     private Potion _heldPotion;
     [SerializeField] private Interactable interactable;
@@ -23,6 +25,7 @@ public class PlayerInteract : MonoBehaviour
     private float holdTime = 0f;
     private float requiredHoldTime = 2f;
     private Crate holdingCrate = null;
+    private bool areRecipesVisible = false;
     private PotionReceiver potionReceiver = null;
     private void Awake()
     {
@@ -38,6 +41,7 @@ public class PlayerInteract : MonoBehaviour
         _input.Player.Use.performed += OnUsePerformed;
         _input.Player.Use.canceled += OnUseCanceled;
         _input.Player.Interact.performed += OnInteractPerformed;
+        _input.Player.ToggleRecipeBook.started += OnToggleRecipeBookStarted;
     }
 
     private void OnDisable()
@@ -184,6 +188,19 @@ public class PlayerInteract : MonoBehaviour
         
     }
     
+    void OnToggleRecipeBookStarted(InputAction.CallbackContext context)
+    {
+        if (areRecipesVisible)
+        {
+            areRecipesVisible = false;
+            recipeBookUI.gameObject.SetActive(false);
+        }
+        else
+        {
+            areRecipesVisible = true;
+            recipeBookUI.gameObject.SetActive(true);
+        }
+    }
     
     // ReSharper disable Unity.PerformanceAnalysis
     private void Highlight()
