@@ -60,23 +60,31 @@ public class CustomerManager : MonoBehaviour
         {
             if (customerQueue[i] != null)
             {
-                customerQueue[i].SetTargetPosition(new Vector3(-20.7999992f,0.0599999987f,7.28999996f + i * offset));
-            }
-        }
-        
-        if (customerQueue[0] != null)
-        {
-            customerQueue[0].SetFirst(true);
-            if (customerQueue[0].GetIsUnsatisfied())
-            {
-                for (int i = 0; i < customerQueue.Length - 1; i++)
-                {
-                    customerQueue[i] = customerQueue[i + 1];
-                }
-                customerQueue[customerQueue.Length - 1] = null;
+                customerQueue[i].SetTargetPosition(new Vector3(-20.7999992f, 0.0599999987f, 7.28999996f + i * offset));
             }
         }
 
+        if (customerQueue[0] != null)
+        {
+            customerQueue[0].SetFirst(true);
+        }
+        
+        for (int i = 0; i < customerQueue.Length; i++)
+        {
+            if (customerQueue[i] != null && customerQueue[i].GetIsUnsatisfied())
+            {
+                for (int j = i; j < customerQueue.Length - 1; j++)
+                {
+                    customerQueue[j] = customerQueue[j + 1];
+                    if (customerQueue[j] != null)
+                    {
+                        customerQueue[j].SetTargetPosition(new Vector3(-20.7999992f, 0.0599999987f, 7.28999996f + j * offset));
+                    }
+                }
+                customerQueue[customerQueue.Length - 1] = null;
+                i--; // Check the current index again after shifting
+            }
+        }
     }
     
     public void DecrementCounter()

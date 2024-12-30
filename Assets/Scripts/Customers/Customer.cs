@@ -14,6 +14,7 @@ public class Customer : MonoBehaviour
     private Vector3 targetPosition;
     private bool wasServed = false;
     private bool isUnsatisfied = false;
+    private bool isWaiting = false;
     private bool isFirst = false;
     private bool wasCounterDecremented = false;
     [SerializeField] private bool isBeingServed = false;
@@ -25,15 +26,23 @@ public class Customer : MonoBehaviour
     private CustomerManager customerManager;
     private TextMeshProUGUI text;
     private UI ui;
+    private Slider satisfactionSlider;
+    private Slider patienceSlider;
+    [SerializeField] private GameObject patienceSliderPrefab;
     
     public Customer(GameObject prefab, Potion potion)
     {
         customerPrefab = prefab;
         desiredPotion = potion;
     }
+    
 
     private void Start()
     {
+        
+        satisfactionSlider = GameObject.Find("Canvas").transform.Find("SatisfactionSlider").GetComponent<Slider>();
+        
+        
         customerManager = GameObject.Find("CustomerManager").GetComponent<CustomerManager>();
         text = GameObject.Find("Canvas").transform.Find("PotionDisplayText").GetComponent<TextMeshProUGUI>();
         ui = GameObject.Find("Canvas").GetComponent<UI>();
@@ -42,6 +51,7 @@ public class Customer : MonoBehaviour
     private void Update()
     {
 
+        
         if (isUnsatisfied)
         {
             if (!wasCounterDecremented)
@@ -49,7 +59,7 @@ public class Customer : MonoBehaviour
                 customerManager.DecrementCounter();
                 wasCounterDecremented = true;
             }
-            transform.position = Vector3.MoveTowards(transform.position, targetPosition - new Vector3(0, 0, 15f), 5f * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, targetPosition - new Vector3(0, 0, 5f), 5f * Time.deltaTime);
             if (transform.position == targetPosition - new Vector3(0, 0, 5f))
             {
                 Destroy(gameObject);
@@ -59,12 +69,36 @@ public class Customer : MonoBehaviour
         {
             // Move the customer to the target position
             transform.position = Vector3.MoveTowards(transform.position, targetPosition, 5f * Time.deltaTime);
+            
         }
 
-
-
+        if (isWaiting && patienceSlider != null)
+        {
+            patienceSlider.transform.position = transform.position + new Vector3(0, 3f, 0);
+        }
+        else if (patienceSlider != null)
+        {
+            Destroy(patienceSlider.gameObject);
+        }
+        
+        // If the customer is not being served and is not waiting
+        if (!isBeingServed && !isWaiting && transform.position == targetPosition)
+        {
+            // Start the patience timer
+            patienceSlider = Instantiate(patienceSliderPrefab, transform.position + new Vector3(0, 3f, 0), Quaternion.identity).GetComponent<Slider>();
+            patienceSlider.transform.SetParent(GameObject.Find("Canvas").transform);
+            StartCoroutine(PatienceCoroutine());
+            isWaiting = true;
+        }
+        
+        
         if (!isBeingServed && transform.position == targetPosition && isFirst)
         {
+            Debug.Log("Customer is waiting");
+
+            satisfactionSlider.transform.position = transform.position + new Vector3(0, 3f, 0);
+            satisfactionSlider.gameObject.SetActive(true);
+            isWaiting = false;
             isBeingServed = true;
             ui.UpdatePotionDisplay();
             StartCoroutine(SatisfactionCoroutine());
@@ -75,30 +109,47 @@ public class Customer : MonoBehaviour
     private IEnumerator SatisfactionCoroutine()
     {
         float _satisfactionTimer = satisfactionTimer;
+        satisfactionSlider.maxValue = satisfactionTimer;
+
 
         // Start timer until it reaches 0
         while (_satisfactionTimer > 0)
         {
             _satisfactionTimer -= Time.deltaTime;
+            satisfactionSlider.value = _satisfactionTimer;
             yield return null;
         }
         
         // If the timer reaches 0
         isUnsatisfied = true;
+        satisfactionSlider.gameObject.SetActive(false);
         ui.ClearPotionDisplay();
     }
         
     private IEnumerator PatienceCoroutine()
     {
         float _patienceTimer = patienceTimer;
+        patienceSlider.maxValue = patienceTimer;
+        
         // Start timer until it reaches 0
         while (_patienceTimer > 0)
         {
+            // If player is first - stop the timer
+            if (isBeingServed)
+            {
+                // Destroy the patience slider
+                Destroy(patienceSlider.gameObject);
+                yield break;
+            }
             _patienceTimer -= Time.deltaTime;
+            patienceSlider.value = _patienceTimer;
             yield return null;
         }
         
         // If the timer reaches 0
+        isUnsatisfied = true;
+        // Destroy the patience slider
+        Destroy(patienceSlider.gameObject);
 
     }
 
