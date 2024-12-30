@@ -93,5 +93,14 @@ public class CustomerManager : MonoBehaviour
         counter++;
         canSpawn = true;
     }
+    
+    public Customer GetFirst()
+    {
+        return customerQueue[0];
+    }
 
+    public Potion[] GetPotions()
+    {
+        return potions;
+    }
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Customer : MonoBehaviour
 {
@@ -23,6 +24,7 @@ public class Customer : MonoBehaviour
     // Customer Manager reference
     private CustomerManager customerManager;
     private TextMeshProUGUI text;
+    private UI ui;
     
     public Customer(GameObject prefab, Potion potion)
     {
@@ -34,6 +36,7 @@ public class Customer : MonoBehaviour
     {
         customerManager = GameObject.Find("CustomerManager").GetComponent<CustomerManager>();
         text = GameObject.Find("Canvas").transform.Find("PotionDisplayText").GetComponent<TextMeshProUGUI>();
+        ui = GameObject.Find("Canvas").GetComponent<UI>();
     }
 
     private void Update()
@@ -47,7 +50,7 @@ public class Customer : MonoBehaviour
                 wasCounterDecremented = true;
             }
             transform.position = Vector3.MoveTowards(transform.position, targetPosition - new Vector3(0, 0, 15f), 5f * Time.deltaTime);
-            if (transform.position == targetPosition - new Vector3(0, 0, 15f))
+            if (transform.position == targetPosition - new Vector3(0, 0, 5f))
             {
                 Destroy(gameObject);
             }
@@ -63,7 +66,7 @@ public class Customer : MonoBehaviour
         if (!isBeingServed && transform.position == targetPosition && isFirst)
         {
             isBeingServed = true;
-            text.GetComponent<TextMeshProUGUI>().text = desiredPotion.name;
+            ui.UpdatePotionDisplay();
             StartCoroutine(SatisfactionCoroutine());
         }
 
@@ -82,6 +85,7 @@ public class Customer : MonoBehaviour
         
         // If the timer reaches 0
         isUnsatisfied = true;
+        ui.ClearPotionDisplay();
     }
         
     private IEnumerator PatienceCoroutine()
