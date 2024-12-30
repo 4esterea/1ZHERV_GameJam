@@ -42,8 +42,6 @@ public class Ingredient : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Cauldron"))
         {
-            Debug.Log("Collision detected with " + collision.gameObject.name);
-            Debug.Log("Ingredient " + this.name);
             _cauldron.PutIngredient(this);
         }
     }

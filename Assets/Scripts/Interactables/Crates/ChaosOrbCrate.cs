@@ -5,7 +5,7 @@ public class ChaosOrbCrate : Crate
 {
     [SerializeField] Ingredient chaosOrb;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void OnEnable()
+    new void OnEnable()
     {
         _containsCounter = 7;
         base.OnEnable();

@@ -59,7 +59,6 @@ public class PlayerInteract : MonoBehaviour
 
     void OnUsePerformed(InputAction.CallbackContext context)
     {
-        Debug.Log("pressed P");
         isHoldingP = true;
         cauldron = interactable as Cauldron;
         if (cauldron != null)
@@ -70,7 +69,6 @@ public class PlayerInteract : MonoBehaviour
 
     void OnUseCanceled(InputAction.CallbackContext context)
     {
-        Debug.Log("released P");
         isHoldingP = false;
         holdTime = 0f;
     }
@@ -80,7 +78,6 @@ public class PlayerInteract : MonoBehaviour
         cauldron = interactable as Cauldron;
         if (isHoldingP && cauldron != null && isUsing)
         {
-            Debug.Log(holdTime);
             holdTime += Time.deltaTime;
             if (holdTime >= requiredHoldTime)
             {
