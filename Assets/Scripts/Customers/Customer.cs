@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using TMPro;
 using UnityEngine;
 
 public class Customer : MonoBehaviour
@@ -21,6 +22,7 @@ public class Customer : MonoBehaviour
     [SerializeField] private float satisfactionTimer;
     // Customer Manager reference
     private CustomerManager customerManager;
+    private TextMeshProUGUI text;
     
     public Customer(GameObject prefab, Potion potion)
     {
@@ -31,6 +33,7 @@ public class Customer : MonoBehaviour
     private void Start()
     {
         customerManager = GameObject.Find("CustomerManager").GetComponent<CustomerManager>();
+        text = GameObject.Find("Canvas").transform.Find("PotionDisplayText").GetComponent<TextMeshProUGUI>();
     }
 
     private void Update()
@@ -60,6 +63,7 @@ public class Customer : MonoBehaviour
         if (!isBeingServed && transform.position == targetPosition && isFirst)
         {
             isBeingServed = true;
+            text.GetComponent<TextMeshProUGUI>().text = desiredPotion.name;
             StartCoroutine(SatisfactionCoroutine());
         }
 
