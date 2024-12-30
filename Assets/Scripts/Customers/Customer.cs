@@ -14,6 +14,7 @@ public class Customer : MonoBehaviour
     private Vector3 targetPosition;
     private bool wasServed = false;
     private bool isUnsatisfied = false;
+    private bool isSatisfied = false;
     private bool isWaiting = false;
     private bool isFirst = false;
     private bool wasCounterDecremented = false;
@@ -53,6 +54,19 @@ public class Customer : MonoBehaviour
 
         
         if (isUnsatisfied)
+        {
+            if (!wasCounterDecremented)
+            {
+                customerManager.DecrementCounter();
+                wasCounterDecremented = true;
+            }
+            transform.position = Vector3.MoveTowards(transform.position, targetPosition - new Vector3(15f, 0, -15f), 5f * Time.deltaTime);
+            if (transform.position == targetPosition - new Vector3(15f, 0, -15f))
+            {
+                Destroy(gameObject);
+            }
+        }
+        else if (isSatisfied)
         {
             if (!wasCounterDecremented)
             {
@@ -115,6 +129,15 @@ public class Customer : MonoBehaviour
         // Start timer until it reaches 0
         while (_satisfactionTimer > 0)
         {
+            // If player gets satisfied - stop the timer
+            if (isSatisfied)
+            {
+                if (satisfactionSlider != null)
+                {
+                    satisfactionSlider.gameObject.SetActive(false);
+                }
+                yield break;
+            }
             _satisfactionTimer -= Time.deltaTime;
             satisfactionSlider.value = _satisfactionTimer;
             yield return null;
@@ -197,5 +220,15 @@ public class Customer : MonoBehaviour
     public bool GetIsUnsatisfied()
     {
         return isUnsatisfied;
+    }
+    
+    public void SetIsSatisfied(bool value)
+    {
+        isSatisfied = value;
+    }
+    
+    public bool GetIsSatisfied()
+    {
+        return isSatisfied;
     }
 }

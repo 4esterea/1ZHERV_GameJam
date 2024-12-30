@@ -23,6 +23,7 @@ public class PlayerInteract : MonoBehaviour
     private float holdTime = 0f;
     private float requiredHoldTime = 2f;
     private Crate holdingCrate = null;
+    private PotionReceiver potionReceiver = null;
     private void Awake()
     {
         _input = new Input();
@@ -96,6 +97,7 @@ public class PlayerInteract : MonoBehaviour
     {
         cauldron = interactable as Cauldron;
         crate = interactable as Crate;
+        potionReceiver = interactable as PotionReceiver;
         if (isHolding && interactable == cauldron && cauldron != null && _heldIngredient != null)
         {
             if (!cauldron.IsFull())
@@ -114,6 +116,13 @@ public class PlayerInteract : MonoBehaviour
             }
 
         } 
+        else if (isHolding && interactable == potionReceiver && potionReceiver != null && _heldPotion != null)
+        {
+            potionReceiver.ReceivePotion(_heldPotion);
+            
+            SetHolding(false);
+            _heldPotion = null;
+        }
         else if (!isHolding && cauldron != null && cauldron.isReady())
         {
             isHolding = true;
