@@ -30,6 +30,7 @@ public class Customer : MonoBehaviour
     private Slider satisfactionSlider;
     private Slider patienceSlider;
     [SerializeField] private GameObject patienceSliderPrefab;
+    private GameManager gameManager;
     
     public Customer(GameObject prefab, Potion potion)
     {
@@ -43,7 +44,7 @@ public class Customer : MonoBehaviour
         
         satisfactionSlider = GameObject.Find("Canvas").transform.Find("SatisfactionSlider").GetComponent<Slider>();
         
-        
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         customerManager = GameObject.Find("CustomerManager").GetComponent<CustomerManager>();
         text = GameObject.Find("Canvas").transform.Find("PotionDisplayText").GetComponent<TextMeshProUGUI>();
         ui = GameObject.Find("Canvas").GetComponent<UI>();
@@ -59,6 +60,7 @@ public class Customer : MonoBehaviour
             {
                 customerManager.DecrementCounter();
                 wasCounterDecremented = true;
+                
             }
             transform.position = Vector3.MoveTowards(transform.position, targetPosition - new Vector3(15f, 0, -15f), 5f * Time.deltaTime);
             if (transform.position == targetPosition - new Vector3(15f, 0, -15f))
@@ -99,7 +101,7 @@ public class Customer : MonoBehaviour
         if (!isBeingServed && !isWaiting && transform.position == targetPosition)
         {
             // Start the patience timer
-            patienceSlider = Instantiate(patienceSliderPrefab, transform.position + new Vector3(0, 3f, 0), Quaternion.identity).GetComponent<Slider>();
+            patienceSlider = Instantiate(patienceSliderPrefab, transform.position + new Vector3(0, 3f, 0), Quaternion.Euler(45, 0, 0)).GetComponent<Slider>();
             patienceSlider.transform.SetParent(GameObject.Find("Canvas").transform);
             StartCoroutine(PatienceCoroutine());
             isWaiting = true;
@@ -145,6 +147,7 @@ public class Customer : MonoBehaviour
         // If the timer reaches 0
         isUnsatisfied = true;
         satisfactionSlider.gameObject.SetActive(false);
+        gameManager.IncreaseChaosLevel(3f);
         ui.ClearPotionDisplay();
     }
         
@@ -174,6 +177,7 @@ public class Customer : MonoBehaviour
         // If the timer reaches 0
         isUnsatisfied = true;
         // Destroy the patience slider
+        gameManager.IncreaseChaosLevel(1f);
         Destroy(patienceSlider.gameObject);
 
     }

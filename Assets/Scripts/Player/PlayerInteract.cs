@@ -1,11 +1,10 @@
-using System;
-using System.Collections;
-using System.Linq;
+
 using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditor;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
+using Cursor = UnityEngine.Cursor;
 
 public class PlayerInteract : MonoBehaviour
 {
@@ -20,6 +19,8 @@ public class PlayerInteract : MonoBehaviour
     private HashSet<Ingredient> _highlightedIngridients = new HashSet<Ingredient>();
     [SerializeField] private Cauldron cauldron;
     [SerializeField] private Crate crate;
+    [SerializeField] private CrateButton button;
+    [SerializeField] private Slider cauldronSlider;
     private bool isUsing = false;
     private bool isHoldingP = false;
     private float holdTime = 0f;
@@ -30,6 +31,8 @@ public class PlayerInteract : MonoBehaviour
     private void Awake()
     {
         _input = new Input();
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     private void OnEnable()
@@ -42,6 +45,13 @@ public class PlayerInteract : MonoBehaviour
         _input.Player.Use.canceled += OnUseCanceled;
         _input.Player.Interact.performed += OnInteractPerformed;
         _input.Player.ToggleRecipeBook.started += OnToggleRecipeBookStarted;
+        #if UNITY_EDITOR
+            _input.Player.ExitGame.started += context => UnityEditor.EditorApplication.isPlaying = false;
+        #elif UNITY_WEBGL
+            _input.Player.ExitGame.started += context => Application.OpenURL(Application.absoluteURL);
+        #else
+            _input.Player.ExitGame.started += context => Application.Quit();
+        #endif
     }
 
     private void OnDisable()
@@ -68,6 +78,7 @@ public class PlayerInteract : MonoBehaviour
         cauldron = interactable as Cauldron;
         if (cauldron != null)
         {
+            cauldronSlider.gameObject.SetActive(true);
             isUsing = true;
         }
     }
@@ -75,24 +86,30 @@ public class PlayerInteract : MonoBehaviour
     void OnUseCanceled(InputAction.CallbackContext context)
     {
         isHoldingP = false;
+        cauldronSlider.gameObject.SetActive(false);
         holdTime = 0f;
     }
     
     void HoldHandling()
     {
+        
         cauldron = interactable as Cauldron;
         if (isHoldingP && cauldron != null && isUsing)
         {
+            cauldronSlider.gameObject.SetActive(true);
             holdTime += Time.deltaTime;
+            cauldronSlider.value = holdTime;
             if (holdTime >= requiredHoldTime)
             {
                 cauldron.Cook();
+                cauldronSlider.gameObject.SetActive(false);
                 isUsing = false;
                 holdTime = 0f;
             }
         }
         else
         {
+            cauldronSlider.gameObject.SetActive(false);
             holdTime = 0f;
             isUsing = false;
         }
@@ -101,6 +118,7 @@ public class PlayerInteract : MonoBehaviour
     {
         cauldron = interactable as Cauldron;
         crate = interactable as Crate;
+        button = interactable as CrateButton;
         potionReceiver = interactable as PotionReceiver;
         if (isHolding && interactable == cauldron && cauldron != null && _heldIngredient != null)
         {
@@ -185,7 +203,10 @@ public class PlayerInteract : MonoBehaviour
             _heldIngredient.SetTossed(false);
             Interact(_heldIngredient);
         }
-        
+        else if (button != null)
+        {
+            button.Interact();
+        }
     }
     
     void OnToggleRecipeBookStarted(InputAction.CallbackContext context)

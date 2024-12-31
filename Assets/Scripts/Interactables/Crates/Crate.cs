@@ -5,7 +5,7 @@ using UnityEngine;
 public class Crate : Interactable
 {
     protected int _containsCounter = 5;
-    protected bool _wasTaken = false;
+    [SerializeField] protected bool _wasTaken = false;
     protected bool _isHeld = false;
     protected Collider _collider;
     protected Rigidbody _rb;

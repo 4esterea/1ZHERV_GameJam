@@ -62,6 +62,15 @@ public partial class @Input: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ExitGame"",
+                    ""type"": ""Button"",
+                    ""id"": ""0783dca3-8e90-4bf2-98d2-19321c91fb6e"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -218,6 +227,17 @@ public partial class @Input: IInputActionCollection2, IDisposable
                     ""action"": ""ToggleRecipeBook"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9bd0dddb-93ad-4484-8630-59dc5f31a390"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";KBM"",
+                    ""action"": ""ExitGame"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -242,6 +262,7 @@ public partial class @Input: IInputActionCollection2, IDisposable
         m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
         m_Player_Use = m_Player.FindAction("Use", throwIfNotFound: true);
         m_Player_ToggleRecipeBook = m_Player.FindAction("ToggleRecipeBook", throwIfNotFound: true);
+        m_Player_ExitGame = m_Player.FindAction("ExitGame", throwIfNotFound: true);
     }
 
     ~@Input()
@@ -312,6 +333,7 @@ public partial class @Input: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Interact;
     private readonly InputAction m_Player_Use;
     private readonly InputAction m_Player_ToggleRecipeBook;
+    private readonly InputAction m_Player_ExitGame;
     public struct PlayerActions
     {
         private @Input m_Wrapper;
@@ -320,6 +342,7 @@ public partial class @Input: IInputActionCollection2, IDisposable
         public InputAction @Interact => m_Wrapper.m_Player_Interact;
         public InputAction @Use => m_Wrapper.m_Player_Use;
         public InputAction @ToggleRecipeBook => m_Wrapper.m_Player_ToggleRecipeBook;
+        public InputAction @ExitGame => m_Wrapper.m_Player_ExitGame;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -341,6 +364,9 @@ public partial class @Input: IInputActionCollection2, IDisposable
             @ToggleRecipeBook.started += instance.OnToggleRecipeBook;
             @ToggleRecipeBook.performed += instance.OnToggleRecipeBook;
             @ToggleRecipeBook.canceled += instance.OnToggleRecipeBook;
+            @ExitGame.started += instance.OnExitGame;
+            @ExitGame.performed += instance.OnExitGame;
+            @ExitGame.canceled += instance.OnExitGame;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -357,6 +383,9 @@ public partial class @Input: IInputActionCollection2, IDisposable
             @ToggleRecipeBook.started -= instance.OnToggleRecipeBook;
             @ToggleRecipeBook.performed -= instance.OnToggleRecipeBook;
             @ToggleRecipeBook.canceled -= instance.OnToggleRecipeBook;
+            @ExitGame.started -= instance.OnExitGame;
+            @ExitGame.performed -= instance.OnExitGame;
+            @ExitGame.canceled -= instance.OnExitGame;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -389,5 +418,6 @@ public partial class @Input: IInputActionCollection2, IDisposable
         void OnInteract(InputAction.CallbackContext context);
         void OnUse(InputAction.CallbackContext context);
         void OnToggleRecipeBook(InputAction.CallbackContext context);
+        void OnExitGame(InputAction.CallbackContext context);
     }
 }

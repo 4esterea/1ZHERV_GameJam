@@ -18,6 +18,7 @@ public class Cauldron : Interactable
     [SerializeField] private float upwardsModifier = 1f;
     [SerializeField] private LayerMask explosionLayerMask;
     [SerializeField] private LayerMask playerLayerMask;
+    [SerializeField] private GameManager gameManager;
     
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -30,12 +31,24 @@ public class Cauldron : Interactable
             {
                 ingredient.gameObject.name = ingredient.name.Replace("(Clone)", "").Trim();
                 _contains[i] = ingredient;
-                Debug.Log(_contains[i].name);
+                Debug.Log(_contains[i].name + " added to cauldron, slot " + i);
 
                 ingredient.transform.position = transform.position*100 + Vector3.up * 2f;
                 ingredient.gameObject.SetActive(false);
 
                 return;
+            }
+
+            if (i == 3)
+            {
+                Explode();
+                foreach (var ing in _contains)
+                {
+                    if (ing != null)
+                    {
+                        Destroy(ing.gameObject);
+                    }
+                } 
             }
         }
     }
@@ -93,6 +106,7 @@ public class Cauldron : Interactable
         if (!potionReady)
         {
             Explode();
+            
         }
     }
     
@@ -130,6 +144,7 @@ public class Cauldron : Interactable
                 rb.AddExplosionForce(explosionForce, transform.position, explosionRadius, upwardsModifier, ForceMode.Impulse);
             }
         }
+        gameManager.IncreaseChaosLevel(1f);
     }
 
     void OnDrawGizmosSelected()

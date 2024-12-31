@@ -12,6 +12,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float speed = 10f;
     [SerializeField] private float rotationSpeed = 15f;
     [SerializeField] private float drag;
+    private bool _controlsInverted = false; 
 
     private void Awake()
     {
@@ -60,9 +61,17 @@ public class PlayerMovement : MonoBehaviour
 
     void Move()
     {
-        Vector3 move = new Vector3(_moveInput.x, 0, _moveInput.y) * Time.deltaTime;
+        Vector3 move;
+        if (!_controlsInverted)
+        {
+            move = new Vector3(_moveInput.x, 0, _moveInput.y) * Time.deltaTime;
+        }
+        else
+        {
+            move = new Vector3(-_moveInput.x, 0, -_moveInput.y) * Time.deltaTime;
+        }
+       
         _rb.AddForce(move * speed, ForceMode.Force);
-
         // Apply drag to reduce the velocity over time
         Vector3 horizontalVelocity = new Vector3(_rb.linearVelocity.x, 0, _rb.linearVelocity.z);
         _rb.AddForce(-horizontalVelocity * drag, ForceMode.Acceleration);
@@ -71,7 +80,15 @@ public class PlayerMovement : MonoBehaviour
     void Rotate()
     {
         // Calculate current move direction
-        Vector3 moveDirection = new Vector3(_moveInput.x, 0, _moveInput.y);
+        Vector3 moveDirection;
+        if (!_controlsInverted)
+        {
+            moveDirection = new Vector3(_moveInput.x, 0, _moveInput.y);
+        }
+        else
+        {
+            moveDirection = new Vector3(-_moveInput.x, 0, -_moveInput.y);
+        }
 
         // If move direction is not zero
         if (moveDirection != Vector3.zero)
@@ -119,7 +136,11 @@ public class PlayerMovement : MonoBehaviour
 
         }
     }
-
+    
+    public void SetControlsInverted(bool value)
+    {
+        _controlsInverted = value;
+    }
     private IEnumerator MovePlayerToCustomers()
     {
         float time = 0;

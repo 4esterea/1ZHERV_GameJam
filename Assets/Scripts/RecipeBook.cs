@@ -14,18 +14,7 @@ public class RecipeBook : MonoBehaviour
 
     void Start()
     {
-        Potion[] potions = cm.GetPotions();
-        int index = 0;
-        foreach (Potion potion in potions)
-        {
-            Recipe recipe = RerollRecipe(potion);
-            _recipeBook[index++] = recipe;
-
-            if (index >= _recipeBook.Length)
-            {
-                break;
-            }
-        }
+        RerollAllRecipes();
     }
 
     private Recipe RerollRecipe(Potion potion)
@@ -61,7 +50,23 @@ public class RecipeBook : MonoBehaviour
             }
         }
     }
+    
+    public void RerollAllRecipes()
+    {
+        Potion[] potions = cm.GetPotions();
+        int index = 0;
+        foreach (Potion potion in potions)
+        {
+            Recipe recipe = RerollRecipe(potion);
+            _recipeBook[index++] = recipe;
 
+            if (index >= _recipeBook.Length)
+            {
+                break;
+            }
+        }
+    }
+    
     public Recipe[] GetRecipeBook()
     {
         return _recipeBook;
