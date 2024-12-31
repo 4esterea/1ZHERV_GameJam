@@ -353,7 +353,7 @@ MonoBehaviour:
   greenPotionPrefab: {fileID: 3193858834555070761, guid: 5e2938b92a646144092d27266642d6fa, type: 3}
   bluePotionPrefab: {fileID: 925767023564859308, guid: 78fc047b9d2161f45a54e4f18ae8af26, type: 3}
   recipeBookObj: {fileID: 1086381879}
-  explosionForce: 699.5
+  explosionForce: 550
   explosionRadius: 8.02
   upwardsModifier: 7
   explosionLayerMask:

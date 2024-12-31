@@ -68,20 +68,19 @@ public class EventManager : MonoBehaviour
     private IEnumerator CooldownEventCoroutine(Events eventx)
     {
         yield return new WaitForSeconds(5f); // 5-second cooldown
-        Debug.Log("Cooldown ended");
 
         switch(eventx)
         {
             case Events.InvertControls:
                 // Handle InvertControls event (e.g., toggle control inversion)
-                Debug.Log("Controls have been inverted");
-                _isInverted = true; // Example action: set controls to inverted state
+                Debug.Log("Cooldown ended for InvertControls event");
+                _isInverted = false; // Example action: set controls to inverted state
                 break;
 
             case Events.RerollRecipes:
                 // Handle RerollRecipes event (e.g., reroll recipe logic)
-                Debug.Log("Recipes have been rerolled");
-                _isRerolled = true; // Example action: set reroll state to true
+                Debug.Log("Cooldown ended for RerollRecipes event");
+                _isRerolled = false; // Example action: set reroll state to true
                 break;
             default:
                 break;
